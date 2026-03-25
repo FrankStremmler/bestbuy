@@ -19,7 +19,7 @@ def raise_init_exception(error_text: str):
     Easier to use
     :param error_text: a Text to describe the Error happend
     '''
-    raise ValueError(f"{ERR_INCORRECT_DATA}{str(error_text)}")
+    raise ValueError(f"{ERR_INCORRECT_DATA}{error_text}")
 
 
 #############################
@@ -32,29 +32,29 @@ def check_params(name: str, price: float, quantity: int)->bool:
     :param quantity: quantity from __init__
     :return: True if no Error. Else an Exception is raised --> no Returnvalue
     '''
-    if name is None or name == "":
+    if not check_str_value(name):
         raise_init_exception(ERR_NO_NAME)
-    if check_float_value(price):
+    if not check_float_value(price):
         raise_init_exception(ERR_NEGATIVE_PRICE)
-    if check_int_value(quantity):
+    if not check_int_value(quantity):
         raise_init_exception(ERR_NEGATIVE_QUANTITY)
     return True
 
 
 def check_str_value(value: str)->bool:
-    if value is None or value is not type(str) or value == "":
-        return False
-    return True
+    return value is not None and isinstance(value, str) and value != ""
 
 def check_float_value(value: float)->bool:
-    if value is None or value < 0:
-        return False
-    return True
+    return value is not None and not isinstance(value, float) and value >= 0.0
+    # if value is None or type(value) is not type(0.0) or value < 0:
+    #     return False
+    # return True
 
 def check_int_value(value: int)->bool:
-    if value is None or value is not type(0) or value < 0:
-        return False
-    return True
+   return value is not None and not isinstance(value, str) and value >= 0
+    # if value is None or type(value) is not type(0) or value < 0:
+    #     return False
+    # return True
 
 
 #############################
@@ -91,14 +91,14 @@ class Product():
     def is_active(self)->bool:
         return self.active
 
-    def activate(self):
+    def activate(self)->None:
         self.active = True
 
-    def deactivate(self):
+    def deactivate(self)->None:
         self.active = False
 
-    def show(self)->str:
-        return f"{self.name}, Price: {self.price:.2f}{self.quantity}"
+    def show(self)->None:
+        print(f"{self.name}, Price: {self.price:.2f}, Quantity: {self.quantity}")
 
     def buy(self, quantity)->float:
         price_total: float = 0
