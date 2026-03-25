@@ -2,6 +2,7 @@
 Implemantation of Product-Class used by
 main.py in bestbuy - Excersize (Best Buy)
 Author: Frank Stremmler
+Project: Best Buy
 '''
 
 #############################
@@ -42,19 +43,27 @@ def check_params(name: str, price: float, quantity: int)->bool:
 
 
 def check_str_value(value: str)->bool:
+    '''
+    checking if value is a valid string. CHecks if not None or empty and is type of string
+    :param value: Type: str
+    :return: Type: bool --> Returns True if valid else False
+    '''
     return value is not None and isinstance(value, str) and value != ""
 
 def check_float_value(value: float)->bool:
-    return value is not None and not isinstance(value, float) and value >= 0.0
-    # if value is None or type(value) is not type(0.0) or value < 0:
-    #     return False
-    # return True
-
+    '''
+    checking if value is a valid float. CHecks if not None or < 0 and is type of float or int
+    :param value: Type: float or int
+    :return: Type: bool --> Returns True if valid else False
+    '''
+    return value is not None and isinstance(value, (float, int)) and value >= 0.0
 def check_int_value(value: int)->bool:
-   return value is not None and not isinstance(value, str) and value >= 0
-    # if value is None or type(value) is not type(0) or value < 0:
-    #     return False
-    # return True
+    '''
+    checking if value is a valid float. CHecks if not None or < 0 and is type of int
+    :param value: Type: int
+    :return: Type: bool --> Returns True if valid else False
+    '''
+    return value is not None and isinstance(value, int) and value >= 0
 
 
 #############################
@@ -82,25 +91,36 @@ class Product():
             self.active = True
 
     def get_quantity(self)->int:
+        ''' getter for quantity'''
         return self.quantity
 
     def set_quantity(self, value: int)->None:
+        '''setter for quantity'''
         if check_float_value(value):
             self.quantity = value
 
     def is_active(self)->bool:
+        '''getter for active'''
         return self.active
 
     def activate(self)->None:
+        '''method for setting active to True'''
         self.active = True
 
     def deactivate(self)->None:
+        '''method for setting active to False'''
         self.active = False
 
     def show(self)->None:
+        '''method to PRINT the Content of the Product'''
         print(f"{self.name}, Price: {self.price:.2f}, Quantity: {self.quantity}")
 
     def buy(self, quantity)->float:
+        '''
+        adds the quantity to an article and returns the corresponding price
+        :prarms quantity: Type: int --> Ammount of parts to be added to the Stock
+        :return: Type: float --> the resulting price for the bought article
+        '''
         price_total: float = 0
         if check_int_value(quantity):
             price_total = self.price * quantity
