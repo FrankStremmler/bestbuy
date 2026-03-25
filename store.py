@@ -36,7 +36,7 @@ class Store():
         self.products.remove(product)
         return True
 
-    def get_total_quantity(self, product: Product)->int:
+    def get_total_quantity(self)->int:
         '''
         Returns the total ammount of articels in the store. Means all quantites added up
         :return: Type of integer --> The Sum of all quantities of all articels
