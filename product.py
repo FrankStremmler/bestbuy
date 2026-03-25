@@ -19,7 +19,7 @@ def raise_init_exception(error_text: str):
     Easier to use
     :param error_text: a Text to describe the Error happend
     '''
-    raise ValueError(f"{ERR_INCORRECT_DATA}{error_text}")
+    raise ValueError(f"{ERR_INCORRECT_DATA}{str(error_text)}")
 
 
 #############################
@@ -34,10 +34,26 @@ def check_params(name: str, price: float, quantity: int)->bool:
     '''
     if name is None or name == "":
         raise_init_exception(ERR_NO_NAME)
-    if price < 0:
+    if check_float_value(price):
         raise_init_exception(ERR_NEGATIVE_PRICE)
-    if quantity < 0:
+    if check_int_value(quantity):
         raise_init_exception(ERR_NEGATIVE_QUANTITY)
+    return True
+
+
+def check_str_value(value: str)->bool:
+    if value is None or value is not type(str) or value == "":
+        return False
+    return True
+
+def check_float_value(value: float)->bool:
+    if value is None or value < 0:
+        return False
+    return True
+
+def check_int_value(value: int)->bool:
+    if value is None or value is not type(0) or value < 0:
+        return False
     return True
 
 
@@ -64,6 +80,32 @@ class Product():
             self.price = price
             self.quantity = quantity
             self.active = True
+
+    def get_quantity(self)->int:
+        return self.quantity
+
+    def set_quantity(self, value: int)->None:
+        if check_float_value(value):
+            self.quantity = value
+
+    def is_active(self)->bool:
+        return self.active
+
+    def activate(self):
+        self.active = True
+
+    def deactivate(self):
+        self.active = False
+
+    def show(self)->str:
+        return f"{self.name}, Price: {self.price:.2f}{self.quantity}"
+
+    def buy(self, quantity)->float:
+        price_total: float = 0
+        if check_int_value(quantity):
+            price_total = self.price * quantity
+            self.quantity += quantity
+        return price_total
 
 
 if __name__ == '__main':
