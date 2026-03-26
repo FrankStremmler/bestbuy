@@ -92,7 +92,6 @@ def show_total_ammount(store: Store):
 
 def get_order(store: Store)->tuple[int|str, int]:
     choice = 0
-    list_products(store)
     choice = integer_range_input("Please choose Product: ", 1, len(store.products), True)
     choice = "" if choice == "" else int(choice)-1
 
@@ -105,6 +104,7 @@ def get_order(store: Store)->tuple[int|str, int]:
 
 def make_order(store: Store):
     order_list: list[tuple[Product, int]] = []
+    list_products(store)
     prod = -1
     while prod != "":
         prod, ammount = get_order(store)
