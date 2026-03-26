@@ -7,9 +7,12 @@ Project: Best Buy
 
 from product import Product
 
-class Store():
+class Store(list):
     '''
     Represents a store with a productlist and basic functionality.
+    Name: string
+    Price: float
+    Quantity: int
     '''
     products: list[Product]
 
@@ -61,13 +64,20 @@ class Store():
         '''
         Returns all articels in the store in a list of Product.
         params shopping_list: Type: list[tuple[str, int]] --> [(name1, ammount1), (name2,...)]
-        :return: Type : float --> The Price for all bought articles
+        :return: Type : float --> The Price for all bought articles, -1 if out of stock
         '''
         price_total = 0.0
         for buy_product, ammount in shopping_list:
             for product in self.products:
                 if product.name == buy_product.name:
-                    price_total += ammount * product.price
+                    if product.quantity >= ammount:
+                        product.quantity -= ammount
+                        price_total += ammount * product.price
+                        print("Product added to list!")
+                    else:
+                        #print(f"Not enough {product.name} on stock")
+                        price_total = -1
+                        break
         return price_total
 
 

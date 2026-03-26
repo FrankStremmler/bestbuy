@@ -111,9 +111,9 @@ class Product():
         '''method for setting active to False'''
         self.active = False
 
-    def show(self)->None:
+    def show(self):
         '''method to PRINT the Content of the Product'''
-        print(f"{self.name}, Price: {self.price:.2f}, Quantity: {self.quantity}")
+        print(f"{self.name}, Price: ${self.price:.2f}, Quantity: {self.quantity}")
 
     def buy(self, quantity)->float:
         '''
