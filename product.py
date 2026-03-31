@@ -9,10 +9,11 @@ Project: Best Buy
 # Constants
 ERR_INCORRECT_DATA = "Incorrect Data!!! -->  "
 ERR_NO_NAME = "No Name was entered"
-ERR_NEGATIVE_QUANTITY = "The Quantity must be 0 or greater!"
-ERR_QUANTITY_NOT_INTEGER = "The QUantity must be an integer"
+ERR_NEGATIVE_QUANTITY = "The Quantity must be 0 or greater"
+ERR_QUANTITY_NOT_INTEGER = "The Quantity must be an integer!"
+ERR_QUANTITY_EXCEEDS_STOCK = "Not enough stock available!"
 ERR_NEGATIVE_PRICE = "The Price must be 0 or greater!"
-
+ERR_NOT_A_NUMBER = "Not an number!"
 #############################
 # Functions for Errorhandling
 def raise_init_exception(error_text: str):
@@ -74,7 +75,7 @@ class Product():
     '''
     name: str
     price: float
-    quantity: int
+    #quantity: int #-> property
     active: bool
 
     def __init__(self, name: str, price: float, quantity: int):
@@ -88,16 +89,45 @@ class Product():
             self.name = name
             self.price = price
             self.quantity = quantity
-            self.active = True
+            self.active = quantity > 0
+
+    @property
+    def quantity(self)->int:
+        ''' getter for quantity'''
+        return int(self._quantity)
+
+    @quantity.setter
+    def quantity(self, value: int)->None:
+        '''
+        setter for quantity
+        checks if value is a valid int and not negative. Also checks if quantity becomes 0.
+        If value < 0  an Exception is raised.
+        :param value: int Value for quantity.
+        :return: None
+        ValueError if value is not an int or is negative
+        '''
+        if check_int_value(value):
+            value = int(value)
+            if value >= 0:
+                self._quantity = value
+            else:
+                raise ValueError(ERR_NEGATIVE_QUANTITY)
+            if self._quantity == 0:
+                # calling deactivate if quantity is 0
+                # not setting active to False
+                # deactivate() may includes more
+                # directives needed to be executed
+                self.deactivate()
+        else:
+            raise ValueError(ERR_NOT_A_NUMBER)
 
     def get_quantity(self)->int:
-        ''' getter for quantity'''
+        ''' getter for quantity a wanted by the excersize'''
         return self.quantity
 
     def set_quantity(self, value: int)->None:
-        '''setter for quantity'''
-        if check_float_value(value):
-            self.quantity = value
+        ''' setter for quantity a wanted by the excersize'''
+        self.quantity = value
 
     def is_active(self)->bool:
         '''getter for active'''
@@ -117,14 +147,18 @@ class Product():
 
     def buy(self, quantity)->float:
         '''
-        adds the quantity to an article and returns the corresponding price
-        :prarms quantity: Type: int --> Ammount of parts to be added to the Stock
+        subtracts the quantity from an article and returns the corresponding price
+        :prarms quantity: Type: int --> Ammount of parts to be taken from the Stock
         :return: Type: float --> the resulting price for the bought article
+        OutOfStockError(ValueError is raised if ammount > quantity)
         '''
         price_total: float = 0
         if check_int_value(quantity):
-            price_total = self.price * quantity
-            self.quantity += quantity
+            if quantity > self.quantity:
+                raise ValueError(ERR_QUANTITY_EXCEEDS_STOCK)
+            else: # not necessary because raised Exception
+                price_total = self.price * quantity
+                self.quantity -= quantity
         return price_total
 
 

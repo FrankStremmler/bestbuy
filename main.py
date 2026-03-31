@@ -33,8 +33,8 @@ def integer_range_input(input_text: str, start: int | None = None, end: int | No
     :return: returns an integer value which is in the given bounds or None if empty String (allow_empty=True)
     """
     while True:
+        str_value = input(input_text)
         try:
-            str_value = input(input_text)
             int_value = int(str_value)
             if start != None and end != None:
                 if start <= int_value <= end:
@@ -79,7 +79,7 @@ def list_products(store: Store):
     '''
     i = 1
     print("------")
-    for product in store.products:
+    for product in store.get_all_products():
         print(f"{i}. ", end="")
         product.show()
         i += 1
