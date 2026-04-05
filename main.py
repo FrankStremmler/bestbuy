@@ -95,7 +95,7 @@ def get_order(store: Store)->tuple[int|str, int]:
     choice = integer_range_input("Please choose Product: ", 1, len(store.get_all_products()), True)
     choice = "" if choice == "" else int(choice)-1
 
-    ammount = integer_range_input("How many items? ", 0)
+    ammount = integer_range_input("How many items? ", 0, allow_empty=True)
     ammount = 0 if ammount == "" else int(ammount)
 
     print("Added to Orderlist!")
