@@ -151,14 +151,16 @@ class Product():
         :prarms quantity: Type: int --> Ammount of parts to be taken from the Stock
         :return: Type: float --> the resulting price for the bought article
         OutOfStockError(ValueError is raised if ammount > quantity)
+        Checking if product is active. If not THIS Order is ignored
         '''
         price_total: float = 0
-        if check_int_value(quantity):
-            if quantity > self.quantity:
-                raise ValueError(ERR_QUANTITY_EXCEEDS_STOCK)
-            else: # not necessary because raised Exception
-                price_total = self.price * quantity
-                self.quantity -= quantity
+        if self.is_active():
+            if check_int_value(quantity):
+                if quantity > self.quantity:
+                    raise ValueError(ERR_QUANTITY_EXCEEDS_STOCK)
+                else: # not necessary because raised Exception
+                    price_total = self.price * quantity
+                    self.quantity -= quantity
         return price_total
 
 
