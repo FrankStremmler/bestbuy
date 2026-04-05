@@ -48,11 +48,11 @@ def integer_range_input(input_text: str, start: int | None = None, end: int | No
             else:
                 return int_value
         except ValueError:
-            if str_value == "":
+            if str_value == "" and allow_empty:
                 return ""
         minstr = f" from {start}" if start != None else ""
         maxstr = f" to {end}" if end != None else ""
-        print(f"Input has to be a number{minstr}{maxstr}.")
+        print(f"Input has to be a number{minstr}{maxstr}{'' if str_value == '' else ' or Return'}.")
 
 
 #############################
@@ -69,7 +69,7 @@ def get_menu_choice(menu_items: list[str]):
         print(f"{i}. {menu_item}")
         i += 1
 
-    choice = integer_range_input("Please choose a number: ", 1, len(MNU_ITEMLIST))
+    choice = integer_range_input("Please choose a number: ", 1, len(MNU_ITEMLIST), allow_empty=False)
     return int(choice)
 
 
