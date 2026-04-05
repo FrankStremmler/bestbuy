@@ -104,17 +104,17 @@ def get_order(store: Store)->tuple[int|str, int]:
 
 def make_order(store: Store):
     order_list: list[tuple[Product, int]] = []
-    product_list = store.get_all_products()
+    productlist = Store(store.get_all_products())
+    list_products(productlist)
 
     prod = -1 # onlyto start the loop
     while prod != "":
-        prod, ammount = get_order(store)
+        prod, ammount = get_order(productlist)
         if prod != "":
-            order_product = (product_list[int(prod)], ammount)
+            order_product = (productlist.products[int(prod)], ammount)
             order_list.append(order_product)
         else:
             break
-
     result = store.order(order_list)
     match result:
         case -1 : print("Error while making order! Quantity larger than what exists")
